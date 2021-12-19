@@ -1,0 +1,39 @@
+{% extends "theme::layouts/default" %}
+
+{% block metadata %} 
+{{ parent() }}
+<style>
+    .header-title {
+        display: flex; justify-content: space-between; align-items: center; padding-top: 20px; padding-bottom: 20px;
+    }
+    .content-todo {
+        padding: 10px 15px; border: solid 1px #f3f3f3; border-radius: 10px; margin-bottom: 5px; 
+    }
+    .content-todo .content {
+        display:flex; justify-content: space-between; 
+    }
+    .content-todo .actions {
+        display: inline-flex; align-items: center; gap: 3px
+    }
+    .content-todo .description {
+        padding-top: 10px; padding-bottom: 10px; margin-top: 10px
+    }
+    .bg-finished {
+        background-color: #dffffc; border: none !important;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="" style="max-width: 800px; margin: 0 auto;">
+    <h3 style="text-transform: capitalize">Create New Todo List</h3>
+    {{
+        form('todos','todos')
+            .skips(['isDone'])
+            .redirect('todos')|raw
+            .render(id)
+    }}
+</div>
+
+{% endblock %}

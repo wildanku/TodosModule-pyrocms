@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9f0773307c4316a539015ec0a2d09f87",
+    "content-hash": "565934dbd1fe27bd5af25e53f033b856",
     "packages": [
         {
             "name": "anomaly/addon-field_type",
@@ -2330,16 +2330,16 @@
         },
         {
             "name": "anomaly/streams-platform",
-            "version": "1.9.x-dev",
+            "version": "v1.9.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel-streams/streams-core.git",
-                "reference": "492435d3ecf89076fdd1d5c2135b35e9cc8834fb"
+                "reference": "883e6c5185e2b1196394883584f791d237efbc88"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel-streams/streams-core/zipball/492435d3ecf89076fdd1d5c2135b35e9cc8834fb",
-                "reference": "492435d3ecf89076fdd1d5c2135b35e9cc8834fb",
+                "url": "https://api.github.com/repos/laravel-streams/streams-core/zipball/883e6c5185e2b1196394883584f791d237efbc88",
+                "reference": "883e6c5185e2b1196394883584f791d237efbc88",
                 "shasum": ""
             },
             "require": {
@@ -2386,9 +2386,9 @@
             "description": "A powerful, inclusive, modular PHP application engine built lovingly for Laravel.",
             "support": {
                 "issues": "https://github.com/laravel-streams/streams-core/issues",
-                "source": "https://github.com/laravel-streams/streams-core/tree/1.9"
+                "source": "https://github.com/laravel-streams/streams-core/tree/v1.9.2"
             },
-            "time": "2021-03-04T22:54:15+00:00"
+            "time": "2021-04-22T20:05:57+00:00"
         },
         {
             "name": "anomaly/system-module",
@@ -9995,61 +9995,6 @@
     ],
     "packages-dev": [
         {
-            "name": "anomaly/installer-module",
-            "version": "v2.4.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/anomalylabs/installer-module.git",
-                "reference": "4abab1279cd5f964e2c1957ede9f31dc99a8d406"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/anomalylabs/installer-module/zipball/4abab1279cd5f964e2c1957ede9f31dc99a8d406",
-                "reference": "4abab1279cd5f964e2c1957ede9f31dc99a8d406",
-                "shasum": ""
-            },
-            "require": {
-                "anomaly/streams-platform": "^1.9"
-            },
-            "type": "streams-addon",
-            "autoload": {
-                "psr-4": {
-                    "Anomaly\\InstallerModule\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "PyroCMS, Inc.",
-                    "email": "support@pyrocms.com",
-                    "homepage": "http://pyrocms.com/",
-                    "role": "Owner"
-                },
-                {
-                    "name": "Ryan Thompson",
-                    "email": "ryan@pyrocms.com",
-                    "homepage": "http://ryanthepyro.com/",
-                    "role": "Owner"
-                }
-            ],
-            "description": "The Streams Platform installer.",
-            "homepage": "http://pyrocms.com/",
-            "keywords": [
-                "Streams",
-                "laravel",
-                "module",
-                "streams-addon"
-            ],
-            "support": {
-                "email": "support@pyrocms.com",
-                "source": "https://github.com/anomalylabs/installer-module/tree/v2.4.0"
-            },
-            "time": "2021-03-04T21:57:51+00:00"
-        },
-        {
             "name": "doctrine/instantiator",
             "version": "1.4.0",
             "source": {
@@ -12254,9 +12199,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "anomaly/streams-platform": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

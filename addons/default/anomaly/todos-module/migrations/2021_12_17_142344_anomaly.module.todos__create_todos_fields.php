@@ -14,13 +14,13 @@ class AnomalyModuleTodosCreateTodosFields extends Migration
     protected $fields = [
         'name'         => 'anomaly.field_type.text',
         'description'   => 'anomaly.field_type.textarea',
-        'slug'          => [
-            'type' => 'anomaly.field_type.slug',
-            'config' => [
-                'slugify'   => 'name',
-                'type'      => '_'
-            ],
-        ],
+        // 'slug'          => [
+        //     'type' => 'anomaly.field_type.slug',
+        //     'config' => [
+        //         'slugify'   => 'name',
+        //         'type'      => '_'
+        //     ],
+        // ],
         'datetime'      => 'anomaly.field_type.datetime',
         'isDone'      => 'anomaly.field_type.boolean'
     ];

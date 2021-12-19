@@ -6,14 +6,15 @@ use Anomaly\TodosModule\Todo\Form\TodoFormBuilder;
 use Anomaly\TodosModule\Todo\Table\TodoTableBuilder;
 use Anomaly\Streams\Platform\Http\Controller\PublicController;
 use Anomaly\TodosModule\Todo\TodoModel;
+use Illuminate\Support\Facades\DB;
 
 class TodosController extends PublicController
 {
 
-    public function __construct()
-    {
-        $this->middleware('login');
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('login');
+    // }
 
     /**
      * Display an index of existing entries.
@@ -23,7 +24,10 @@ class TodosController extends PublicController
      */
     public function index(TodoTableBuilder $table)
     {
-        return $this->view->make('anomaly.module.todos::index');
+        // return $table->render();
+        $todos = TodoModel::where('created_by_id',auth()->user()->id)
+                    ->orderBy(DB::raw('ISNULL(datetime), datetime'), 'ASC')->paginate(10);
+        return $this->view->make('anomaly.module.todos::index',compact('todos'));
     }
 
     /**
@@ -35,7 +39,6 @@ class TodosController extends PublicController
     public function create(TodoFormBuilder $form)
     {  
         $this->breadcrumbs->add('Todos','todos');
-        $form->skipField('slug');
         $form->skipField('isDone');
         return $form->render();
     }
@@ -49,6 +52,7 @@ class TodosController extends PublicController
      */
     public function edit(TodoFormBuilder $form, $id)
     {
+        $this->breadcrumbs->add('Todos','todos');
         $form->skipField('slug');
         $form->skipField('isDone');
         
@@ -60,6 +64,54 @@ class TodosController extends PublicController
 
         return $form->render($id);
     }
+
+    /**
+     * Update todo as done.
+     *
+     * @param $id
+     * @return redirect
+     */
+    public function done($id)
+    {
+        $todo = TodoModel::find($id);
+        $this->isBelongToUser($todo);
+
+        $todo->isDone = 1;
+        $todo->save();
+        return redirect()->back()->with('success','Yeeah, you do better!');
+    }
+
+    /**
+     * Update todo as unfinished.
+     *
+     * @param $id
+     * @return redirect
+     */
+    public function unfinished($id)
+    {
+        $todo = TodoModel::find($id);
+        $this->isBelongToUser($todo);
+
+        $todo->isDone = 0;
+        $todo->save();
+        return redirect()->back();
+    }
+
+    /**
+     * delete todo.
+     *
+     * @param $id
+     * @return redirect
+     */
+    public function delete($id)
+    {
+        $todo = TodoModel::find($id);
+        $this->isBelongToUser($todo);
+
+        $todo->delete();
+        return redirect()->back();
+    }
+
 
 
     private function isBelongToUser($todo) 

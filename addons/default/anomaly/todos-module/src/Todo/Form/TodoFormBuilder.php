@@ -47,7 +47,9 @@ class TodoFormBuilder extends FormBuilder
      *
      * @var array
      */
-    protected $options = [];
+    protected $options = [
+        'redirect' => 'todos'
+    ];
 
     /**
      * The form sections.

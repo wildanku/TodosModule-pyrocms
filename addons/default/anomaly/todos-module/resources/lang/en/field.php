@@ -9,5 +9,8 @@ return [
     ],
     'datetime' => [
         'name'  => 'Date and Time'
+    ],
+    'created_by_id' => [
+        'name'  => 'User'
     ]
 ];

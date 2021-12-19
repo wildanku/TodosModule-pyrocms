@@ -38,10 +38,10 @@ class AnomalyModuleTodosCreateTodosStream extends Migration
             'translatable' => false,
             'required' => true,
         ],
-        'slug' => [
-            'unique' => true,
-            'required' => false,
-        ],
+        // 'slug' => [
+        //     'unique' => true,
+        //     'required' => false,
+        // ],
         'description',
         'datetime',
         'isDone' => [

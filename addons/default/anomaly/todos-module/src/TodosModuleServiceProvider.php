@@ -4,9 +4,9 @@ use Anomaly\Streams\Platform\Addon\AddonServiceProvider;
 use Anomaly\TodosModule\Todo\Contract\TodoRepositoryInterface;
 use Anomaly\TodosModule\Todo\TodoRepository;
 use Anomaly\Streams\Platform\Model\Todos\TodosTodosEntryModel;
+use Anomaly\TodosModule\Todo\Form\TodoFormBuilder;
 use Anomaly\TodosModule\Todo\TodoModel;
 use Illuminate\Routing\Router;
-use Anomaly\TodosModule\TodosObserver;
 
 class TodosModuleServiceProvider extends AddonServiceProvider
 {
@@ -45,6 +45,7 @@ class TodosModuleServiceProvider extends AddonServiceProvider
      * @type array|null
      */
     protected $routes = [
+
         'todos'         => [
             'as'            => 'todos.index',
             'uses'          => 'Anomaly\TodosModule\Http\Controller\TodosController@index',
@@ -59,6 +60,27 @@ class TodosModuleServiceProvider extends AddonServiceProvider
         'todos/edit/{id}'   => [
             'as'            => 'todos.edit',
             'uses'          => 'Anomaly\TodosModule\Http\Controller\TodosController@edit',
+            'middleware'    => [\Anomaly\TodosModule\Http\Middleware\LoginMiddleware::class]
+        ],
+
+        'todos/done/{id}'   => [
+            'as'            => 'todos.done',
+            'verb'          => 'put',
+            'uses'          => 'Anomaly\TodosModule\Http\Controller\TodosController@done',
+            'middleware'    => [\Anomaly\TodosModule\Http\Middleware\LoginMiddleware::class]
+        ],
+
+        'todos/unfinished/{id}'   => [
+            'as'            => 'todos.unfinished',
+            'verb'          => 'put',
+            'uses'          => 'Anomaly\TodosModule\Http\Controller\TodosController@unfinished',
+            'middleware'    => [\Anomaly\TodosModule\Http\Middleware\LoginMiddleware::class]
+        ],
+
+        'todos/delete/{id}'   => [
+            'as'            => 'todos.delete',
+            'verb'          => 'delete',
+            'uses'          => 'Anomaly\TodosModule\Http\Controller\TodosController@delete',
             'middleware'    => [\Anomaly\TodosModule\Http\Middleware\LoginMiddleware::class]
         ],
 
@@ -123,6 +145,7 @@ class TodosModuleServiceProvider extends AddonServiceProvider
      */
     protected $bindings = [
         TodosTodosEntryModel::class => TodoModel::class,
+        'my_form'   => TodoFormBuilder::class
     ];
 
     /**
@@ -175,11 +198,10 @@ class TodosModuleServiceProvider extends AddonServiceProvider
     /**
      * Boot the addon.
      */
-    public function boot()
+    public function boot(Router $route)
     {
         // Run extra post-boot registration logic here.
         // Use method injection or commands to bring in services.
-        // TodoModel::observe(TodosObserver::class);
     }
 
     /**
@@ -189,8 +211,7 @@ class TodosModuleServiceProvider extends AddonServiceProvider
      */
     public function map(Router $router)
     {
-        // Register dynamic routes here for example.
-        // Use method injection or commands to bring in services.
+
     }
 
 }

@@ -1,33 +1,76 @@
 {% extends "theme::layouts/default" %}
 
+{% block metadata %} 
+{{ parent() }}
+<style>
+    .header-title {
+        display: flex; justify-content: space-between; align-items: center; padding-top: 20px; padding-bottom: 20px;
+    }
+    .content-todo {
+        padding: 10px 15px; border: solid 1px #f3f3f3; border-radius: 10px; margin-bottom: 5px; 
+    }
+    .content-todo .content {
+        display:flex; justify-content: space-between; 
+    }
+    .content-todo .actions {
+        display: inline-flex; align-items: center; gap: 3px
+    }
+    .content-todo .description {
+        padding-top: 10px; padding-bottom: 10px; margin-top: 10px
+    }
+    .bg-finished {
+        background-color: #dffffc; border: none !important;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 
 <div class="" style="max-width: 800px; margin: 0 auto;">
-    <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 20px; padding-bottom: 20px;">
+    <div class="header-title">
         <h1 class="h3 text-uppercase" style="margin: 0;">My Tasks</h1>
         <div>
             <a href="{{ route('todos.create') }}" class="btn btn-primary btn-sm" style="padding-left: 20px; padding-right: 20px">Create</a>
         </div>
     </div>
     
-    {% set todos = entries('todos').where('created_by_id',auth_user().id).orderBy('datetime','DESC').paginate() %}
-
     {% for todo in todos %}
-    <div style="padding: 10px 15px; border: solid 1px #f3f3f3; border-radius: 10px;">
-        <div style="display:flex; justify-content: space-between; " >
+    <div class="content-todo {% if todo.isDone.true() %}  bg-finished {% endif %}">
+        <div class="content" >
             <div style="cursor: pointer" data-toggle="collapse" data-target="#collapseExample{{todo.id}}" aria-expanded="false" aria-controls="collapseExample">
+                {% if todo.datetime.date() %}
                 <small style="font-size: 8pt;">{{ todo.datetime.date() }}, {{ todo.datetime.time() }}</small> <br>
-                <p style="font-size: 12pt; margin: 0; ">{{ todo.name }}</p>
-            </div>
-            <div>
-                {% if todo.isDone %}
-                <a href="" class="btn btn-sm btn-success">Mark as Done</a> 
                 {% endif %}
-                <a href="todos/edit/{{todo.id}}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i></a>
-                <a href="" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
+                <p style="font-size: 12pt; margin: 0; ">
+                    {{ todo.name }} {% if todo.isDone.true() %}<span style="font-size: 9pt; margin-left: 10px" class="text-success">Finished</span> {% endif %}
+                </p>
+            </div>
+            <div class="actions">
+                {% if todo.isDone.false() %}
+                <form action="{{ url('todos/done/'~todo.id) }}" method="POST">
+                    {{ csrf_field()|raw }}
+                    <input type='hidden' name='_method' value='PUT'>
+                    <button class="btn btn-sm btn-success">Mark as Done</button>
+                </form>
+                {% else %} 
+                <form action="{{ url('todos/unfinished/'~todo.id) }}" method="POST">
+                    {{ csrf_field()|raw }}
+                    <input type='hidden' name='_method' value='PUT'>
+                    <button class="btn btn-sm btn-warning">Mark as Not Finished</button>
+                </form>
+                {% endif %}
+                
+                <a href="{{ url('todos/edit/'~todo.id) }}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i></a>
+                
+                <form action="{{ url('todos/delete/'~todo.id) }}" method="POST">
+                    <input type='hidden' name='_method' value='DELETE'>
+                    {{ csrf_field()|raw }}
+                    <input type='hidden' name='_method' value='DELETE'>
+                    <button onclick="return confirm('Are you sure wanna delete it?');" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
+                </form>
             </div>
         </div>
-        <div style="border-top: solid 1px #f0f0f0; padding-top: 10px; margin-top: 10px" class="collapse" id="collapseExample{{todo.id}}">
+        <div class="collapse description" id="collapseExample{{todo.id}}">
             <div class="card card-body">
                 {{ todo.description }}
             </div>
@@ -35,6 +78,10 @@
     </div>
         
     {% endfor %}
+
+    <div style="text-align: center;">
+        {{ todos.links|raw }}
+    </div>
 </div>
 
 {% endblock %}
