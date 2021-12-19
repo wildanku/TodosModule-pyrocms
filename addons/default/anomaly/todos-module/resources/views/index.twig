@@ -1,0 +1,40 @@
+{% extends "theme::layouts/default" %}
+
+{% block content %}
+
+<div class="" style="max-width: 800px; margin: 0 auto;">
+    <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 20px; padding-bottom: 20px;">
+        <h1 class="h3 text-uppercase" style="margin: 0;">My Tasks</h1>
+        <div>
+            <a href="{{ route('todos.create') }}" class="btn btn-primary btn-sm" style="padding-left: 20px; padding-right: 20px">Create</a>
+        </div>
+    </div>
+    
+    {% set todos = entries('todos').where('created_by_id',auth_user().id).orderBy('datetime','DESC').paginate() %}
+
+    {% for todo in todos %}
+    <div style="padding: 10px 15px; border: solid 1px #f3f3f3; border-radius: 10px;">
+        <div style="display:flex; justify-content: space-between; " >
+            <div style="cursor: pointer" data-toggle="collapse" data-target="#collapseExample{{todo.id}}" aria-expanded="false" aria-controls="collapseExample">
+                <small style="font-size: 8pt;">{{ todo.datetime.date() }}, {{ todo.datetime.time() }}</small> <br>
+                <p style="font-size: 12pt; margin: 0; ">{{ todo.name }}</p>
+            </div>
+            <div>
+                {% if todo.isDone %}
+                <a href="" class="btn btn-sm btn-success">Mark as Done</a> 
+                {% endif %}
+                <a href="todos/edit/{{todo.id}}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i></a>
+                <a href="" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
+            </div>
+        </div>
+        <div style="border-top: solid 1px #f0f0f0; padding-top: 10px; margin-top: 10px" class="collapse" id="collapseExample{{todo.id}}">
+            <div class="card card-body">
+                {{ todo.description }}
+            </div>
+        </div>
+    </div>
+        
+    {% endfor %}
+</div>
+
+{% endblock %}
