@@ -6,7 +6,9 @@ use Anomaly\TodosModule\Todo\Form\TodoFormBuilder;
 use Anomaly\TodosModule\Todo\Table\TodoTableBuilder;
 use Anomaly\Streams\Platform\Http\Controller\PublicController;
 use Anomaly\TodosModule\Todo\TodoModel;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 
 class TodosController extends PublicController
 {
@@ -22,11 +24,24 @@ class TodosController extends PublicController
      * @param TodoTableBuilder $table
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function index(TodoTableBuilder $table)
+    public function index(TodoTableBuilder $table, Request $request)
     {
         // return $table->render();
-        $todos = TodoModel::where('created_by_id',auth()->user()->id)
-                    ->orderBy(DB::raw('ISNULL(datetime), datetime'), 'ASC')->paginate(10);
+        $todos = TodoModel::where('created_by_id',auth()->user()->id);
+        if($request->all()) {
+            if($request->name) {
+                $todos = $todos->where('name','like','%'.$request->name.'%');
+            }
+            if($request->start || $request->end) {
+                $todos = $todos->whereBetween('datetime',[Carbon::parse($request->start), Carbon::parse($request->end)]);
+            }
+            if($request->status) {
+                if($request->status == 0) { $status = 0; } else { $status = 1; }
+                $todos = $todos->where('isDone',$status);
+            }
+        } 
+        
+        $todos = $todos->orderBy(DB::raw('ISNULL(datetime), datetime'), 'ASC')->paginate(10);
         return $this->view->make('anomaly.module.todos::index',compact('todos'));
     }
 

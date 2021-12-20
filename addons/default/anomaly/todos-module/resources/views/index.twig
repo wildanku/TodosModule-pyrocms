@@ -21,6 +21,20 @@
     .bg-finished {
         background-color: #dffffc; border: none !important;
     }
+    .filter {
+        display: flex;
+        gap: 5px;
+        padding-bottom: 15px;
+    }
+    .filter .actions {
+        display:flex;
+        align-items: end;
+        gap: 3px;
+    }
+    .filter .actions button,
+    .filter .actions a {
+        width: 100%;
+    }
 </style>
 {% endblock %}
 
@@ -33,6 +47,35 @@
             <a href="{{ route('todos.create') }}" class="btn btn-primary btn-sm" style="padding-left: 20px; padding-right: 20px">Create</a>
         </div>
     </div>
+
+    <form action="?">
+        <div class="filter">
+            <div class="">
+                <small>Search Name/Title</small>
+                <input name="name" placeholder="search by name..." value="{{ app.request.get('name') }}" type="text" class="form-control">
+            </div>
+            <div class="">
+                <small>Start Date</small>
+                <input name="start" value="{{ app.request.get('start') }}" type="date" class="form-control">
+            </div>
+            <div class="">
+                <small>End Date</small>
+                <input name="end" type="date" value="{{ app.request.get('end') }}" class="form-control">
+            </div>
+            <div class="">
+                <small>Status</small>
+                <select name="status" id="" class="form-control">
+                    <option value="">All</option>
+                    <option value="true" {% if app.request.get('status') == 'true' %} selected {% endif %} >Done</option>
+                    <option value="false" {% if app.request.get('status') == 'false' %} selected {% endif %} >Not Finished</option>
+                </select>
+            </div>
+            <div class="actions">
+                <button type="submit" class="btn btn-primary">Filter</button>
+                <a href="?" class="btn btn-warning">Clear</a>
+            </div>
+        </div>
+    </form>
     
     {% for todo in todos %}
     <div class="content-todo {% if todo.isDone.true() %}  bg-finished {% endif %}">
